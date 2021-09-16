@@ -5,18 +5,19 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.*
 import org.apache.logging.log4j.LogManager
 
+internal val koremodLogger = LogManager.getLogger("Koremods")
+
 @Name("Koremods Loading Plugin")
 @MCVersion("1.12.2")
 @SortingIndex(1001)
-@TransformerExclusions("dev.su5ed.koremods.script", "dev.su5ed.koremods.launch", "kotlin", "org.jetbrains.kotlin")
+@TransformerExclusions("dev.su5ed.koremods", "kotlin", "org.jetbrains.kotlin")
 class KoremodsLoadingPlugin : IFMLLoadingPlugin {
-    private val logger = LogManager.getLogger()
     
     init {
-        initScriptEngine(logger)
+        initScriptEngine(koremodLogger)
     }
     
-    override fun getASMTransformerClass(): Array<String> = emptyArray() // TODO
+    override fun getASMTransformerClass(): Array<String> = arrayOf(KoremodsTransformer::class.java.name)
 
     override fun getModContainerClass(): String = KoremodsModContainer::class.java.name
 

@@ -1,12 +1,13 @@
 package dev.su5ed.koremods.launch
 
 import dev.su5ed.koremods.KoremodDiscoverer
+import net.minecraft.launchwrapper.LaunchClassLoader
 import net.minecraftforge.fml.relauncher.IFMLCallHook
 import org.apache.logging.log4j.LogManager
 import java.io.File
 
 class KoremodsSetup : IFMLCallHook {
-    private val logger = LogManager.getLogger("Koremods")
+    private val logger = LogManager.getLogger()
 
     private lateinit var gameDir: File
 
@@ -14,7 +15,7 @@ class KoremodsSetup : IFMLCallHook {
         logger.info("Setting up Koremods")
         val modsDir = gameDir.toPath().resolve("mods")
         
-        KoremodDiscoverer(logger).discoverKoremods(modsDir)
+        KoremodDiscoverer.discoverKoremods(modsDir)
         
         return null
     }
@@ -23,5 +24,8 @@ class KoremodsSetup : IFMLCallHook {
         logger.info("Injecting data into setup class")
         
         gameDir = data["mcLocation"] as File
+        
+        val classLoader = data["classLoader"] as LaunchClassLoader
+        classLoader.addClassLoaderExclusion("dev.su5ed.koremods.dsl.")
     }
 }

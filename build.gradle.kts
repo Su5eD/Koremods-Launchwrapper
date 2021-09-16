@@ -58,6 +58,14 @@ tasks {
         
         archiveClassifier.set("full")
     }
+    
+    processResources {
+        inputs.property("version", rootProject.version)
+        
+        filesMatching("koremods.info") {
+            expand("version" to rootProject.version)
+        }
+    }
 }
 
 artifacts { 

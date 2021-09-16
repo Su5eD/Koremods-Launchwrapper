@@ -3,17 +3,21 @@ package dev.su5ed.koremods.launch
 import com.google.common.eventbus.EventBus
 import net.minecraftforge.fml.common.DummyModContainer
 import net.minecraftforge.fml.common.LoadController
+import net.minecraftforge.fml.common.MetadataCollection
 import net.minecraftforge.fml.common.ModMetadata
 
-class KoremodsModContainer : DummyModContainer(ModMetadata()) {
-    init {
-        val metadata = metadata
-        metadata.modId = "koremods"
-        metadata.name = "Koremods"
-        metadata.description = "A coremodding framework running KTS/JSR-223"
-        metadata.version = "1.0-SNAPSHOT" // TODO
-        metadata.authorList = listOf("Su5eD")
-    }
-
+class KoremodsModContainer : DummyModContainer(readMetadata()) {
     override fun registerBus(bus: EventBus, controller: LoadController): Boolean = true
+}
+
+fun readMetadata(): ModMetadata {
+    val ins = KoremodsModContainer::class.java.classLoader
+        .getResourceAsStream("koremods.info")
+        ?: run {
+            koremodLogger.error("Couldn't read mod metadata file")
+            return ModMetadata()
+        }
+
+    val metadata = MetadataCollection.from(ins, "Koremods")
+    return metadata.getMetadataForId("koremods", null)
 }
