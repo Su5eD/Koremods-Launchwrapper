@@ -4,8 +4,7 @@ import dev.su5ed.koremods.transformClass
 import net.minecraft.launchwrapper.IClassTransformer
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.ClassWriter.COMPUTE_MAXS
-import org.objectweb.asm.ClassWriter.COMPUTE_FRAMES
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
 
 class KoremodsTransformer : IClassTransformer {
@@ -17,7 +16,7 @@ class KoremodsTransformer : IClassTransformer {
         reader.accept(node, 0)
         transformClass(name, node)
         
-        val writer = ClassWriter(reader, COMPUTE_MAXS or COMPUTE_FRAMES)
+        val writer = ClassWriter(Opcodes.ASM5)
         node.accept(writer)
         
         return writer.toByteArray()

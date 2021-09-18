@@ -60,10 +60,10 @@ tasks {
     }
     
     processResources {
-        inputs.property("version", rootProject.version)
+        inputs.property("version", project.version)
         
         filesMatching("koremods.info") {
-            expand("version" to rootProject.version)
+            expand("version" to project.version)
         }
     }
 }
@@ -74,4 +74,8 @@ publishing {
             artifact(tasks.getByName("fullJar"))
         }
     }
+}
+
+artifacts { 
+    archives(tasks.getByName("fullJar"))
 }
