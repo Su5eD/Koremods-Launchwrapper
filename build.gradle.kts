@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("wtf.gofancy.fancygradle") version "1.1.0-0"
+    id("dev.su5ed.gradle.transform")
 }
 
 val coremodPath = "dev.su5ed.koremods.launch.KoremodsLoadingPlugin"
