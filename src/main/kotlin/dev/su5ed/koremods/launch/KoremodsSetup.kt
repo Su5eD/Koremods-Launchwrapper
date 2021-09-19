@@ -10,12 +10,14 @@ class KoremodsSetup : IFMLCallHook {
     private val logger = LogManager.getLogger()
 
     private lateinit var gameDir: File
+    private lateinit var classLoader: LaunchClassLoader
 
     override fun call(): Void? {
         logger.info("Setting up Koremods")
         val modsDir = gameDir.toPath().resolve("mods")
+        val classpath = classLoader.urLs
         
-        KoremodDiscoverer.discoverKoremods(modsDir)
+        KoremodDiscoverer.discoverKoremods(modsDir, classpath)
         
         return null
     }
@@ -24,8 +26,8 @@ class KoremodsSetup : IFMLCallHook {
         logger.info("Injecting data into setup class")
         
         gameDir = data["mcLocation"] as File
+        classLoader = data["classLoader"] as LaunchClassLoader
         
-        val classLoader = data["classLoader"] as LaunchClassLoader
         classLoader.addClassLoaderExclusion("dev.su5ed.koremods.dsl.")
     }
 }

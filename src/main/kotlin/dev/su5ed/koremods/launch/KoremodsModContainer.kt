@@ -1,28 +1,13 @@
 package dev.su5ed.koremods.launch
 
 import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
-import dev.su5ed.koremods.KoremodDiscoverer
-import net.minecraftforge.fml.common.*
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.DummyModContainer
+import net.minecraftforge.fml.common.LoadController
+import net.minecraftforge.fml.common.MetadataCollection
+import net.minecraftforge.fml.common.ModMetadata
 
 class KoremodsModContainer : DummyModContainer(readMetadata()) {
-    override fun registerBus(bus: EventBus, controller: LoadController): Boolean {
-        bus.register(this)
-        return true
-    }
-    
-    @Suppress("UNUSED", "UNUSED_PARAMETER")
-    @Subscribe
-    fun preInit(event: FMLPreInitializationEvent) {
-        if (KoremodDiscoverer.isInitialized()) {
-            val mods = Loader.instance().activeModList.map(ModContainer::getModId)
-            
-            KoremodDiscoverer.transformers.forEach { (modid) -> 
-                if (!mods.contains(modid)) throw RuntimeException("Attempted to use nonexistent modid $modid")
-            }
-        }
-    }
+    override fun registerBus(bus: EventBus, controller: LoadController): Boolean = true
 }
 
 fun readMetadata(): ModMetadata {
