@@ -3,7 +3,6 @@ package dev.su5ed.koremods.launch
 import dev.su5ed.koremods.transformClass
 import net.minecraft.launchwrapper.IClassTransformer
 import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.ClassWriter.COMPUTE_MAXS
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
@@ -15,9 +14,9 @@ class KoremodsTransformer : IClassTransformer {
         
         val node = ClassNode()
         reader.accept(node, 0)
-        transformClass(name, node)
+        val flags = transformClass(name, node)
         
-        val writer = ClassWriter(Opcodes.ASM5 or COMPUTE_MAXS) // TODO: Custom ClassWriter with working frame computation
+        val writer = createClassWriter(Opcodes.ASM5 or COMPUTE_MAXS or flags)
         node.accept(writer)
         
         return writer.toByteArray()

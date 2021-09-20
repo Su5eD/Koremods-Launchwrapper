@@ -17,7 +17,7 @@ class KoremodsLoadingPlugin : IFMLLoadingPlugin {
         preloadScriptEngine(koremodLogger)
     }
     
-    override fun getASMTransformerClass(): Array<String> = arrayOf(KoremodsTransformer::class.java.name)
+    override fun getASMTransformerClass(): Array<String> = arrayOf(KoremodsTransformer::class.java.name, ClassHierarchyManager::class.java.name)
 
     override fun getModContainerClass(): String = KoremodsModContainer::class.java.name
 

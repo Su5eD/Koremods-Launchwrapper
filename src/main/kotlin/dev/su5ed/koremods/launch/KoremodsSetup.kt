@@ -7,6 +7,10 @@ import org.apache.logging.log4j.LogManager
 import java.io.File
 
 class KoremodsSetup : IFMLCallHook {
+    companion object {
+        internal var runtimeDeobfuscationEnabled: Boolean = false
+    }
+    
     private val logger = LogManager.getLogger()
 
     private lateinit var gameDir: File
@@ -27,6 +31,7 @@ class KoremodsSetup : IFMLCallHook {
         
         gameDir = data["mcLocation"] as File
         classLoader = data["classLoader"] as LaunchClassLoader
+        runtimeDeobfuscationEnabled = data["runtimeDeobfuscationEnabled"] as Boolean
         
         classLoader.addClassLoaderExclusion("dev.su5ed.koremods.dsl.")
     }
