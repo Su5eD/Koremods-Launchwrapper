@@ -1,3 +1,4 @@
+import java.time.LocalDateTime
 import net.minecraftforge.gradle.common.util.RunConfig
 
 plugins {
@@ -16,7 +17,7 @@ minecraft {
     runs {
         val config = Action<RunConfig> {
             properties(mapOf(
-                "forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP,COREMODLOG",
+                "forge.logging.markers" to "SCAN,REGISTRIES",
                 "forge.logging.console.level" to "debug"
             ))
             workingDirectory = project.file("run").canonicalPath
@@ -43,18 +44,27 @@ dependencies {
     implementation(project(":script"))
 }
 
+val manifestAttributes = mapOf(
+    "Specification-Title" to "Koremods-LaunchWrapper",
+    "Specification-Vendor" to "Su5eD",
+    "Specification-Version" to 1,
+    "Implementation-Title" to "Koremods-LaunchWrapper",
+    "Implementation-Version" to project.version,
+    "Implementation-Vendor" to "Su5eD",
+    "Implementation-Timestamp" to LocalDateTime.now(),
+    "FMLCorePlugin" to coremodPath
+)
+
 tasks {
     jar {
-        manifest { 
-            attributes(
-                "FMLCorePlugin" to coremodPath
-            )
-        }
+        manifest.attributes(manifestAttributes)
     }
     
     register<Jar>("fullJar") {
         from(zipTree(jar.get().archiveFile))
         from(zipTree(project(":script").tasks.getByName<Jar>("shadowJar").archiveFile))
+        
+        manifest.attributes(manifestAttributes)
         
         archiveClassifier.set("full")
     }
