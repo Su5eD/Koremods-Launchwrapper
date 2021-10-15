@@ -2,11 +2,6 @@ package dev.su5ed.koremods.launch
 
 import org.objectweb.asm.ClassWriter
 
-internal fun createClassWriter(writerFlags: Int): ClassWriter {
-    return if (writerFlags and ClassWriter.COMPUTE_FRAMES != 0) KoremodsClassWriter(writerFlags) 
-    else ClassWriter(writerFlags)
-}
-
 // Credit: CodeChickenLib
 
 internal class KoremodsClassWriter(writerFlags: Int) : ClassWriter(writerFlags) {
