@@ -4,8 +4,32 @@ import net.minecraft.launchwrapper.IClassTransformer
 import net.minecraft.launchwrapper.Launch
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper
 import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
 
-// Credit: CodeChickenLib
+/**
+ * Credit: CodeChickenLib  
+ * 
+ * [CC_ClassWriter](https://github.com/TheCBProject/CodeChickenLib/blob/1.11.2/src/main/java/codechicken/lib/asm/CC_ClassWriter.java)
+ * [ClassHierarchyManager](https://github.com/TheCBProject/CodeChickenLib/blob/1.11.2/src/main/java/codechicken/lib/asm/ClassHierarchyManager.java)
+ */
+
+internal class KoremodsClassWriter(writerFlags: Int) : ClassWriter(writerFlags) {
+    
+    override fun getCommonSuperClass(type1: String, type2: String): String {
+        val c = type1.replace('/', '.')
+        val d = type2.replace('/', '.')
+        
+        if (classExtends(d, c)) return type1
+        else if (classExtends(c, d)) return type2
+        return getParent(getSuperClass(c), d).replace('.', '/')
+    }
+    
+    
+    private fun getParent(type1: String, type2: String): String {
+        return if (!classExtends(type2, type1)) getParent(getSuperClass(type1), type2)
+        else type1
+    }
+}
 
 class ClassHierarchyManager : IClassTransformer {
     override fun transform(name: String, transformedName: String, bytes: ByteArray?): ByteArray? {
@@ -91,9 +115,11 @@ private fun declareReflection(name: String): SuperCache {
     val clazz = Class.forName(name)
     val cache = getOrCreateCache(name)
 
-    if (clazz.isInterface) cache.superclass = "java.lang.Object"
-    else if (name == "java.lang.Object") return cache
-    else cache.superclass = toKey(clazz.superclass.name)
+    when {
+        clazz.isInterface -> cache.superclass = "java.lang.Object"
+        name == "java.lang.Object" -> return cache
+        else -> cache.superclass = toKey(clazz.superclass.name)
+    }
 
     cache.add(cache.superclass!!)
     clazz.interfaces.forEach { itf ->
