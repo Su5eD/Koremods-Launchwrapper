@@ -1,6 +1,7 @@
 package dev.su5ed.koremods.launch
 
 import dev.su5ed.koremods.KoremodDiscoverer
+import dev.su5ed.koremods.preloadScriptHost
 import net.minecraft.launchwrapper.LaunchClassLoader
 import net.minecraftforge.fml.relauncher.IFMLCallHook
 import org.apache.logging.log4j.LogManager
@@ -17,6 +18,8 @@ class KoremodsSetup : IFMLCallHook {
     private lateinit var classLoader: LaunchClassLoader
 
     override fun call(): Void? {
+        preloadScriptHost(koremodLogger) // TODO Preload earlier / remove
+        
         logger.info("Setting up Koremods")
         val modsDir = gameDir.toPath().resolve("mods")
         val classpath = classLoader.urLs
@@ -27,12 +30,10 @@ class KoremodsSetup : IFMLCallHook {
     }
 
     override fun injectData(data: Map<String, Any>) {
-        logger.info("Injecting data into setup class")
+        logger.debug("Injecting data into setup class")
         
         gameDir = data["mcLocation"] as File
         classLoader = data["classLoader"] as LaunchClassLoader
         runtimeDeobfuscationEnabled = data["runtimeDeobfuscationEnabled"] as Boolean
-        
-        classLoader.addClassLoaderExclusion("dev.su5ed.koremods.dsl.")
     }
 }

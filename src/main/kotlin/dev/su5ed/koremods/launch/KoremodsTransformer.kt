@@ -1,5 +1,6 @@
 package dev.su5ed.koremods.launch
 
+import dev.su5ed.koremods.dsl.TransformerPropertiesExtension
 import dev.su5ed.koremods.dsl.computeFrames
 import dev.su5ed.koremods.transformClass
 import net.minecraft.launchwrapper.IClassTransformer
@@ -21,11 +22,11 @@ class KoremodsTransformer : IClassTransformer {
         val node = ClassNode()
         reader.accept(node, 0)
         
-        return transformClass(name, node)?.let { props ->
-            
-            val writer = if (props.computeFrames) KoremodsClassWriter(CLASS_WRITE_FRAMES_FLAGS) else ClassWriter(CLASS_WRITER_FLAGS)
+        return transformClass(name, node).let { props ->
+            val computeFrames = props.any(TransformerPropertiesExtension::computeFrames)
+            val writer = if (computeFrames) KoremodsClassWriter(CLASS_WRITE_FRAMES_FLAGS) else ClassWriter(CLASS_WRITER_FLAGS)
             node.accept(writer)
-            
+
             return@let writer.toByteArray()
         } ?: bytes
     }
