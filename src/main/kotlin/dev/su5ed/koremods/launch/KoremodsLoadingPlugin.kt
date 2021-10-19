@@ -9,7 +9,7 @@ internal val koremodLogger = LogManager.getLogger("Koremods")
 @Name("Koremods Loading Plugin")
 @MCVersion("1.12.2")
 @SortingIndex(1001)
-@TransformerExclusions("dev.su5ed.koremods", "kotlin", "org.jetbrains.kotlin")
+@TransformerExclusions("dev.su5ed.koremods.", "kotlin", "org.jetbrains.kotlin")
 class KoremodsLoadingPlugin : IFMLLoadingPlugin {
     
     override fun getASMTransformerClass(): Array<String> = arrayOf(KoremodsTransformer::class.java.name, ClassHierarchyManager::class.java.name)
