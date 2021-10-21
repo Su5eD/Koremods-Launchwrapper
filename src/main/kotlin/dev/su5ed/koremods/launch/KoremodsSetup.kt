@@ -1,5 +1,6 @@
 package dev.su5ed.koremods.launch
 
+import dev.su5ed.koremods.KoremodBlackboard
 import dev.su5ed.koremods.KoremodDiscoverer
 import net.minecraft.launchwrapper.LaunchClassLoader
 import net.minecraftforge.fml.relauncher.IFMLCallHook
@@ -19,8 +20,11 @@ class KoremodsSetup : IFMLCallHook {
     override fun call(): Void? {
         logger.info("Setting up Koremods")
         val modsDir = gameDir.toPath().resolve("mods")
+        val cacheDir = modsDir.resolve("koremods").resolve("cache").toFile()
         val classpath = classLoader.urLs
         
+        cacheDir.mkdir()
+        KoremodBlackboard.cacheDir = cacheDir
         KoremodDiscoverer.discoverKoremods(modsDir, classpath)
         
         return null
