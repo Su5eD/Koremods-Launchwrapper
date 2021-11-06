@@ -3,9 +3,11 @@ package dev.su5ed.koremods.launch
 import dev.su5ed.koremods.KoremodBlackboard
 import dev.su5ed.koremods.KoremodDiscoverer
 import net.minecraft.launchwrapper.LaunchClassLoader
+import net.minecraftforge.common.ForgeVersion
 import net.minecraftforge.fml.relauncher.IFMLCallHook
 import org.apache.logging.log4j.LogManager
 import java.io.File
+import kotlin.io.path.div
 
 class KoremodsSetup : IFMLCallHook {
     companion object {
@@ -19,13 +21,13 @@ class KoremodsSetup : IFMLCallHook {
 
     override fun call(): Void? {
         logger.info("Setting up Koremods")
-        val modsDir = gameDir.toPath().resolve("mods")
-        val cacheDir = modsDir.resolve("koremods").resolve("cache").toFile()
-        val classpath = classLoader.urLs
+        
+        val modsDir = gameDir.toPath() / "mods"
+        val cacheDir = (modsDir / ForgeVersion.mcVersion / "koremods" / "cache").toFile()
         
         cacheDir.mkdir()
         KoremodBlackboard.cacheDir = cacheDir
-        KoremodDiscoverer.discoverKoremods(modsDir, classpath)
+        KoremodDiscoverer.discoverKoremods(modsDir, classLoader.urLs)
         
         return null
     }

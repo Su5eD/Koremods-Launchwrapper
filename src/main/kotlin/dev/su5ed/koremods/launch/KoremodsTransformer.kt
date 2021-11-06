@@ -16,9 +16,10 @@ private const val CLASS_WRITE_FRAMES_FLAGS = CLASS_WRITER_FLAGS or COMPUTE_FRAME
 
 class KoremodsTransformer : IClassTransformer {
     
-    override fun transform(name: String, transformedName: String, bytes: ByteArray): ByteArray {
-        val reader = ClassReader(bytes)
+    override fun transform(name: String, transformedName: String, bytes: ByteArray?): ByteArray? {
+        if (bytes == null) return bytes
         
+        val reader = ClassReader(bytes)
         val node = ClassNode()
         reader.accept(node, 0)
         
