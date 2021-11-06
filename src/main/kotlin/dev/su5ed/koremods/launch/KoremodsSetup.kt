@@ -25,7 +25,7 @@ class KoremodsSetup : IFMLCallHook {
         val modsDir = gameDir.toPath() / "mods"
         val cacheDir = (modsDir / ForgeVersion.mcVersion / "koremods" / "cache").toFile()
         
-        cacheDir.mkdir()
+        cacheDir.mkdirs()
         KoremodBlackboard.cacheDir = cacheDir
         KoremodDiscoverer.discoverKoremods(modsDir, classLoader.urLs)
         
