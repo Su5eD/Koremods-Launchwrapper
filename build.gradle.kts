@@ -1,15 +1,19 @@
-import java.time.LocalDateTime
 import net.minecraftforge.gradle.common.util.RunConfig
+import java.time.LocalDateTime
 
 plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("wtf.gofancy.fancygradle") version "1.1.0-0"
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
-val coremodPath = "dev.su5ed.koremods.launch.KoremodsLoadingPlugin"
-
 evaluationDependsOn(":script")
+
+val scriptProj = project(":script")
+val coremodPath = "dev.su5ed.koremods.prelaunch.KoremodsLoadingPlugin"
+val repackPackagePath: String by project
+val relocatePackages: ((String, String) -> Unit) -> Unit by scriptProj.extra
 
 minecraft {
     mappings("stable", "39-1.12")
@@ -41,7 +45,7 @@ fancyGradle {
 dependencies {
     minecraft(group = "net.minecraftforge", name = "forge", version = "1.12.2-14.23.5.2855")
     
-    implementation(project(":script"))
+    implementation(scriptProj)
 }
 
 val manifestAttributes = mapOf(
@@ -57,16 +61,36 @@ val manifestAttributes = mapOf(
 
 tasks {
     jar {
+        finalizedBy("fullJar")
+    }
+    
+    shadowJar {
+        configurations = emptyList()
+        
         manifest.attributes(manifestAttributes)
+        relocatePackages(::relocate)
+        
+        archiveClassifier.set("shade")
     }
     
     register<Jar>("fullJar") {
-        from(zipTree(jar.get().archiveFile))
-        from(zipTree(project(":script").tasks.getByName<Jar>("shadowJar").archiveFile))
+        val shadowJar = scriptProj.tasks.getByName<Jar>("shadowJar")
+        val lwjglDepsJar = scriptProj.tasks.getByName<Jar>("lwjglDepsJar")
+        val kotlinDepsJar = scriptProj.tasks.getByName<Jar>("kotlinDepsJar")
+        dependsOn(project.tasks.shadowJar, shadowJar, lwjglDepsJar, kotlinDepsJar)
         
-        manifest.attributes(manifestAttributes)
+        from(zipTree(project.tasks.shadowJar.get().archiveFile))
+        from(zipTree(shadowJar.archiveFile))
+        from(lwjglDepsJar.archiveFile)
+        from(kotlinDepsJar.archiveFile)
         
-        archiveClassifier.set("full")
+        manifest {
+            attributes(manifestAttributes)
+            attributes(
+                "Additional-Dependencies-LWJGL" to lwjglDepsJar.archiveFile.get().asFile.name,
+                "Additional-Dependencies-Kotlin" to kotlinDepsJar.archiveFile.get().asFile.name
+            )
+        }
     }
     
     processResources {
