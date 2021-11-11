@@ -42,10 +42,17 @@ fancyGradle {
     }
 }
 
+configurations {
+    runtimeClasspath {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+}
+
 dependencies {
     minecraft(group = "net.minecraftforge", name = "forge", version = "1.12.2-14.23.5.2855")
     
-    implementation(scriptProj)
+    compileOnly(scriptProj)
+    compileOnly(scriptProj.sourceSets["splash"].output)
 }
 
 val manifestAttributes = mapOf(
@@ -102,14 +109,16 @@ tasks {
     }
 }
 
+reobf {
+    create("jar") {
+        dependsOn("fullJar")
+    }
+}
+
 publishing {
     publications { 
         named<MavenPublication>(project.name) {
             artifact(tasks.getByName("fullJar"))
         }
     }
-}
-
-artifacts { 
-    archives(tasks.getByName("fullJar"))
 }

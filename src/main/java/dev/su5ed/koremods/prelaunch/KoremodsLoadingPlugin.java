@@ -15,7 +15,7 @@ import java.util.Map;
 @SortingIndex(1001)
 @TransformerExclusions({ "dev.su5ed.koremods." })
 public class KoremodsLoadingPlugin implements IFMLLoadingPlugin {
-    
+
     @Override
     public String[] getASMTransformerClass() {
         return new String[] { KoremodsTransformerWrapper.class.getName(), ClassHierarchyManager.class.getName() };
