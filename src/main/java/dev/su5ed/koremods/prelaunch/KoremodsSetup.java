@@ -15,9 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,7 +62,7 @@ public class KoremodsSetup implements IFMLCallHook {
     }
 
     @Override
-    public Void call() throws URISyntaxException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public Void call() throws Exception {
         LOGGER.info("Setting up Koremods");
         
         Path modsDir = gameDir.toPath().resolve("mods");
@@ -104,14 +102,19 @@ public class KoremodsSetup implements IFMLCallHook {
             System.clearProperty("org.lwjgl.librarypath");
         }
         
-        Class<?> launchClass = dependencyClassLoader.loadClass("dev.su5ed.koremods.launch.KoremodsLaunch");
-        Method launchMethod = launchClass.getDeclaredMethod("launch", File.class, ClassLoader.class, Path.class, URL[].class);
-        Object instance = launchClass.newInstance();
-        
-        LOGGER.info("Launching Koremods instance");
-        launchMethod.invoke(instance, cacheDir, dependencyClassLoader, modsDir, this.launchCL.getURLs());
-        
-        if (splash != null) splash.close();
+        try {
+            Class<?> launchClass = dependencyClassLoader.loadClass("dev.su5ed.koremods.launch.KoremodsLaunch");
+            Method launchMethod = launchClass.getDeclaredMethod("launch", File.class, ClassLoader.class, Path.class, URL[].class);
+            Object instance = launchClass.newInstance();
+            
+            LOGGER.info("Launching Koremods instance");
+            launchMethod.invoke(instance, cacheDir, dependencyClassLoader, modsDir, this.launchCL.getURLs());
+            
+            if (splash != null) splash.close();
+        } catch (Throwable t) {
+            if (splash != null) splash.forceClose();
+            throw t;
+        }
         
         return null;
     }
