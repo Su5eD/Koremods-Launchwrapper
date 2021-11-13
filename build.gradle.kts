@@ -55,6 +55,11 @@ dependencies {
     compileOnly(scriptProj.sourceSets["splash"].output)
 }
 
+license {
+    excludes.add("dev/su5ed/koremods/prelaunch/transform/ClassHierarchyManager.java")
+    excludes.add("dev/su5ed/koremods/launch/KoremodsClassWriter.kt")
+}
+
 val manifestAttributes = mapOf(
     "Specification-Title" to "Koremods-LaunchWrapper",
     "Specification-Vendor" to "Su5eD",
