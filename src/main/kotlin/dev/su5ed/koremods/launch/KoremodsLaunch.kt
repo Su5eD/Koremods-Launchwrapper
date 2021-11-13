@@ -26,15 +26,64 @@ package dev.su5ed.koremods.launch
 
 import dev.su5ed.koremods.KoremodDiscoverer
 import dev.su5ed.koremods.KoremodsBlackboard
+import dev.su5ed.koremods.api.SplashScreen
+import dev.su5ed.koremods.parseMainConfig
+import dev.su5ed.koremods.prelaunch.DependencyClassLoader
+import dev.su5ed.koremods.prelaunch.KoremodsSetup
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler
+import net.minecraftforge.fml.relauncher.Side
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.core.LoggerContext
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
+import kotlin.io.path.div
+
+private val LWJGL_DEP_PACKAGES = listOf(
+    "org.lwjgl.",
+    "dev.su5ed.koremods.splash."
+)
 
 class KoremodsLaunch {
     
-    fun launch(cacheDir: File, classLoader: ClassLoader?, modsDir: Path, urls: Array<URL>) {
+    @Suppress("unused")
+    fun launch(setup: KoremodsSetup, cacheDir: File, classLoader: ClassLoader, configDir: Path, modsDir: Path, discoveryUrls: Array<URL>) {
         KoremodsBlackboard.cacheDir = cacheDir
         KoremodsBlackboard.scriptContextClassLoader = classLoader
-        KoremodDiscoverer.discoverKoremods(modsDir, urls)
+        
+        val configPath = configDir / KoremodsBlackboard.CONFIG_FILE
+        val config = parseMainConfig(configPath)
+        var splash: SplashScreen? = null
+        
+        if (config.enableSplashScreen && FMLLaunchHandler.side() == Side.CLIENT) {
+            val lwjglDep = setup.extractDependency("LWJGL")
+            val splashClassLoader = DependencyClassLoader(arrayOf(setup.modJarUrl, lwjglDep), KoremodsSetup.dependencyClassLoader, LWJGL_DEP_PACKAGES)
+            val splashClass = splashClassLoader.loadClass("dev.su5ed.koremods.splash.KoremodsSplashKt")
+            val initSplashScreen = splashClass.getDeclaredMethod("initSplashScreen")
+            splash = initSplashScreen.invoke(null) as SplashScreen
+            
+            listOf(
+                getLoggerContext(KoremodsSetup::class.java.classLoader),
+                getLoggerContext(classLoader),
+                getLoggerContext(splashClassLoader),
+            )
+                .forEach(splash::injectSplashLogger)
+            
+            splash.awaitInit()
+            System.clearProperty("org.lwjgl.librarypath")
+        }
+        
+        try {
+            KoremodDiscoverer.discoverKoremods(modsDir, discoveryUrls)
+            
+            splash?.close()
+        } catch (t: Throwable) {
+            splash?.forceClose()
+            throw t
+        }
+    }
+    
+    private fun getLoggerContext(classLoader: ClassLoader): LoggerContext {
+        return LogManager.getContext(classLoader, false) as LoggerContext
     }
 }

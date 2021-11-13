@@ -26,14 +26,15 @@ package dev.su5ed.koremods.prelaunch;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DependencyClassLoader extends URLClassLoader { // TODO Javadoc
-    private static final List<String> EXCLUDED_PACKAGES = Collections.singletonList(
-            "dev.su5ed.koremods.api."
+    private static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
+            "dev.su5ed.koremods.api.",
+            "dev.su5ed.koremods.prelaunch."
     );
     
     private final List<String> priorityClasses;
