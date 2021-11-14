@@ -42,10 +42,8 @@ fancyGradle {
     }
 }
 
-configurations {
-    runtimeClasspath {
-        exclude(group = "org.jetbrains.kotlin")
-    }
+configurations.mavenRuntime {
+    extendsFrom(scriptProj.configurations.mavenRuntime.get())
 }
 
 dependencies {
@@ -73,7 +71,8 @@ val manifestAttributes = mapOf(
 
 tasks {
     jar {
-        finalizedBy("fullJar")
+        dependsOn("fullJar")
+        isEnabled = false
     }
     
     shadowJar {
@@ -114,16 +113,9 @@ tasks {
     }
 }
 
-reobf {
-    create("jar") {
-        dependsOn("fullJar")
+configurations.all { 
+    outgoing.artifacts.removeIf { 
+        it.buildDependencies.getDependencies(null).contains(tasks["jar"])
     }
-}
-
-publishing {
-    publications { 
-        named<MavenPublication>(project.name) {
-            artifact(tasks.getByName("fullJar"))
-        }
-    }
+    outgoing.artifact(tasks["fullJar"])
 }
