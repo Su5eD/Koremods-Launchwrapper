@@ -18,8 +18,8 @@
 
 package dev.su5ed.koremods.launch
 
-import dev.su5ed.koremods.prelaunch.transform.ClassHierarchyManager.classExtends
-import dev.su5ed.koremods.prelaunch.transform.ClassHierarchyManager.getSuperClass
+import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.classExtends
+import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.getSuperClass
 import org.objectweb.asm.ClassWriter
 
 /**

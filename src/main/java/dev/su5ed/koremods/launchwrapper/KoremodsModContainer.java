@@ -22,32 +22,35 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.prelaunch.transform;
+package dev.su5ed.koremods.launchwrapper;
 
-import dev.su5ed.koremods.prelaunch.KoremodsSetup;
-import net.minecraft.launchwrapper.IClassTransformer;
+import com.google.common.eventbus.EventBus;
+import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.LoadController;
+import net.minecraftforge.fml.common.MetadataCollection;
+import net.minecraftforge.fml.common.ModMetadata;
 
-public class KoremodsTransformerWrapper implements IClassTransformer {
-    private static final String TRANSFORMER_CLASS = "dev.su5ed.koremods.launch.KoremodsTransformer";
-    private IClassTransformer actualTransformer;
-    
+import java.io.InputStream;
+
+public class KoremodsModContainer extends DummyModContainer {
+
+    public KoremodsModContainer() {
+        super(readMetadata());
+    }
+
     @Override
-    public byte[] transform(String name, String transformedName, byte[] bytes) {
-        if (this.actualTransformer == null) {
-            if (KoremodsSetup.dependencyClassLoader != null) {
-                try {
-                    Class<?> cl = KoremodsSetup.dependencyClassLoader.loadClass(TRANSFORMER_CLASS);
-                    actualTransformer = (IClassTransformer) cl.newInstance();
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+    public boolean registerBus(EventBus bus, LoadController controller) {
+        return true;
+    }
+
+    private static ModMetadata readMetadata() { // TODO constant modid
+        InputStream ins = KoremodsModContainer.class.getClassLoader().getResourceAsStream("koremods.info");
+        if (ins == null) {
+            KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
+            return new ModMetadata();
         }
-        
-        if (this.actualTransformer != null) {
-            return this.actualTransformer.transform(name, transformedName, bytes);
-        }
-        
-        return bytes;
+    
+        MetadataCollection metadata = MetadataCollection.from(ins, "Koremods");
+        return metadata.getMetadataForId("koremods", null);
     }
 }

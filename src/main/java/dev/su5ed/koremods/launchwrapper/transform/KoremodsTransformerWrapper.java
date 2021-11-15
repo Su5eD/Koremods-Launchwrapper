@@ -22,35 +22,28 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.prelaunch;
+package dev.su5ed.koremods.launchwrapper.transform;
 
-import com.google.common.eventbus.EventBus;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.MetadataCollection;
-import net.minecraftforge.fml.common.ModMetadata;
+import dev.su5ed.koremods.prelaunch.KoremodsPrelaunch;
+import net.minecraft.launchwrapper.IClassTransformer;
 
-import java.io.InputStream;
-
-public class KoremodsModContainer extends DummyModContainer {
-
-    public KoremodsModContainer() {
-        super(readMetadata());
-    }
-
-    @Override
-    public boolean registerBus(EventBus bus, LoadController controller) {
-        return true;
-    }
-
-    private static ModMetadata readMetadata() { // TODO constant modid
-        InputStream ins = KoremodsModContainer.class.getClassLoader().getResourceAsStream("koremods.info");
-        if (ins == null) {
-            KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
-            return new ModMetadata();
-        }
+public class KoremodsTransformerWrapper implements IClassTransformer {
+    private static final String TRANSFORMER_CLASS = "dev.su5ed.koremods.launch.KoremodsTransformer";
+    private IClassTransformer actualTransformer;
     
-        MetadataCollection metadata = MetadataCollection.from(ins, "Koremods");
-        return metadata.getMetadataForId("koremods", null);
+    @Override
+    public byte[] transform(String name, String transformedName, byte[] bytes) {
+        if (this.actualTransformer == null) {
+            if (KoremodsPrelaunch.dependencyClassLoader != null) {
+                try {
+                    Class<?> cl = KoremodsPrelaunch.dependencyClassLoader.loadClass(TRANSFORMER_CLASS);
+                    actualTransformer = (IClassTransformer) cl.newInstance();
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        
+        return this.actualTransformer != null ? this.actualTransformer.transform(name, transformedName, bytes) : bytes;
     }
 }

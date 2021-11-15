@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.prelaunch;
+package dev.su5ed.koremods.launchwrapper;
 
-import dev.su5ed.koremods.prelaunch.transform.ClassHierarchyManager;
-import dev.su5ed.koremods.prelaunch.transform.KoremodsTransformerWrapper;
+import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager;
+import dev.su5ed.koremods.launchwrapper.transform.KoremodsTransformerWrapper;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;

@@ -11,7 +11,7 @@ plugins {
 evaluationDependsOn(":script")
 
 val scriptProj = project(":script")
-val coremodPath = "dev.su5ed.koremods.prelaunch.KoremodsLoadingPlugin"
+val coremodPath = "dev.su5ed.koremods.launchwrapper.KoremodsLoadingPlugin"
 val repackPackagePath: String by project
 val relocatePackages: ((String, String) -> Unit) -> Unit by scriptProj.extra
 
@@ -25,7 +25,6 @@ minecraft {
                 "forge.logging.console.level" to "debug"
             ))
             workingDirectory = project.file("run").canonicalPath
-            source(sourceSets.main.get())
             jvmArgs.add("-Dfml.coreMods.load=$coremodPath")
         }
 
@@ -54,7 +53,7 @@ dependencies {
 }
 
 license {
-    excludes.add("dev/su5ed/koremods/prelaunch/transform/ClassHierarchyManager.java")
+    excludes.add("dev/su5ed/koremods/launchwrapper/transform/ClassHierarchyManager.java")
     excludes.add("dev/su5ed/koremods/launch/KoremodsClassWriter.kt")
 }
 
