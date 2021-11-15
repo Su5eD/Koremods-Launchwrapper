@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package dev.su5ed.koremods.launch
+package dev.su5ed.koremods.launchwrapper
 
 import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.classExtends
 import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.getSuperClass

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launch
+package dev.su5ed.koremods.launchwrapper
 
 import dev.su5ed.koremods.dsl.TransformerPropertiesExtension
 import dev.su5ed.koremods.dsl.computeFrames

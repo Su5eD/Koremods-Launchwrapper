@@ -28,7 +28,7 @@ import dev.su5ed.koremods.prelaunch.KoremodsPrelaunch;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class KoremodsTransformerWrapper implements IClassTransformer {
-    private static final String TRANSFORMER_CLASS = "dev.su5ed.koremods.launch.KoremodsTransformer";
+    private static final String TRANSFORMER_CLASS = "dev.su5ed.koremods.launchwrapper.KoremodsTransformer";
     private IClassTransformer actualTransformer;
     
     @Override
