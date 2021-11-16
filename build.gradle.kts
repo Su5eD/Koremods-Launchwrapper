@@ -54,7 +54,7 @@ dependencies {
 
 license {
     excludes.add("dev/su5ed/koremods/launchwrapper/transform/ClassHierarchyManager.java")
-    excludes.add("dev/su5ed/koremods/launch/KoremodsClassWriter.kt")
+    excludes.add("dev/su5ed/koremods/launchwrapper/KoremodsClassWriter.kt")
 }
 
 val manifestAttributes = mapOf(

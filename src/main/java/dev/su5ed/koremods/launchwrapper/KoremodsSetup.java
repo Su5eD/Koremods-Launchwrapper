@@ -25,7 +25,6 @@
 package dev.su5ed.koremods.launchwrapper;
 
 import dev.su5ed.koremods.prelaunch.KoremodsPrelaunch;
-import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
@@ -43,14 +42,12 @@ public class KoremodsSetup implements IFMLCallHook {
     
     static final Logger LOGGER = LogManager.getLogger("Koremods.Setup");
     private Path gameDir;
-    private LaunchClassLoader launchCL;
     
     @Override
     public void injectData(Map<String, Object> data) {
         LOGGER.debug("Injecting data into setup class");
         
-        this.gameDir = ((File) data.get("mcLocation")).toPath(); 
-        this.launchCL = (LaunchClassLoader) data.get("classLoader"); 
+        this.gameDir = ((File) data.get("mcLocation")).toPath();
         runtimeDeobfuscationEnabled = (Boolean) data.getOrDefault("runtimeDeobfuscationEnabled", false);
     }
 
@@ -58,7 +55,7 @@ public class KoremodsSetup implements IFMLCallHook {
     public Void call() throws Exception {
         LOGGER.info("Setting up Koremods");
         
-        KoremodsPrelaunch prelaunch = new KoremodsPrelaunch(this.gameDir, this.launchCL.getURLs(), ForgeVersion.mcVersion);
+        KoremodsPrelaunch prelaunch = new KoremodsPrelaunch(this.gameDir, ForgeVersion.mcVersion);
         prelaunch.launch(FMLLaunchHandler.side() == Side.CLIENT ? SPLASH_FACTORY_CLASS : null);
         
         return null;
