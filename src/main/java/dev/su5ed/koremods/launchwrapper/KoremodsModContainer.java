@@ -44,7 +44,7 @@ public class KoremodsModContainer extends DummyModContainer {
     }
 
     private static ModMetadata readMetadata() { // TODO constant modid
-        InputStream ins = KoremodsModContainer.class.getClassLoader().getResourceAsStream("koremods.info");
+        InputStream ins = KoremodsModContainer.class.getClassLoader().getResourceAsStream("mcmod.info");
         if (ins == null) {
             KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
             return new ModMetadata();

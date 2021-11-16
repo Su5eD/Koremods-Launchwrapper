@@ -51,9 +51,10 @@ public class SplashScreenFactoryImpl implements SplashScreenFactory {
             );
             Class<?> splashClass = splashClassLoader.loadClass("dev.su5ed.koremods.splash.KoremodsSplashScreen");
             SplashScreen splash = (SplashScreen) splashClass.newInstance();
-
             splash.setTerminateOnClose(true);
-            splash.init();
+            
+            splash.startThread();
+            splash.awaitInit();
             System.clearProperty("org.lwjgl.librarypath");
 
             return splash;
