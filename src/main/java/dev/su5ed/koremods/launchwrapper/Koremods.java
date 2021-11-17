@@ -24,33 +24,16 @@
 
 package dev.su5ed.koremods.launchwrapper;
 
-import com.google.common.eventbus.EventBus;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.MetadataCollection;
-import net.minecraftforge.fml.common.ModMetadata;
+import dev.su5ed.koremods.prelaunch.KoremodsBlackboard;
+import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.InputStream;
-
-public class KoremodsModContainer extends DummyModContainer {
-
-    public KoremodsModContainer() {
-        super(readMetadata());
-    }
-
-    @Override
-    public boolean registerBus(EventBus bus, LoadController controller) {
-        return true;
-    }
-
-    private static ModMetadata readMetadata() { // TODO constant modid
-        InputStream ins = KoremodsModContainer.class.getClassLoader().getResourceAsStream("mcmod.info");
-        if (ins == null) {
-            KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
-            return new ModMetadata();
-        }
+@Mod(modid = KoremodsBlackboard.MODID, useMetadata = true)
+public class Koremods {
+    private static final Logger LOGGER = LogManager.getLogger();
     
-        MetadataCollection metadata = MetadataCollection.from(ins, "Koremods");
-        return metadata.getMetadataForId("koremods", null);
+    public Koremods() {
+        LOGGER.info("Mod Constructed");
     }
 }

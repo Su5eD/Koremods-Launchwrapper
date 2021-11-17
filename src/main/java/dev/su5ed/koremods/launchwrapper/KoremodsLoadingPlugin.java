@@ -47,7 +47,7 @@ public class KoremodsLoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
     public String getModContainerClass() {
-        return KoremodsModContainer.class.getName();
+        return null;
     }
 
     @Override

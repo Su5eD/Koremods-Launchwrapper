@@ -53,8 +53,7 @@ public class SplashScreenFactoryImpl implements SplashScreenFactory {
             SplashScreen splash = (SplashScreen) splashClass.newInstance();
             splash.setTerminateOnClose(true);
             
-            splash.startThread();
-            splash.awaitInit();
+            splash.startOnThread();
             System.clearProperty("org.lwjgl.librarypath");
 
             return splash;

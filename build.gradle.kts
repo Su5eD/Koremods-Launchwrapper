@@ -8,9 +8,9 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
-evaluationDependsOn(":script")
+evaluationDependsOn(":koremods-script")
 
-val scriptProj = project(":script")
+val scriptProj = project(":koremods-script")
 val coremodPath = "dev.su5ed.koremods.launchwrapper.KoremodsLoadingPlugin"
 val repackPackagePath: String by project
 val relocatePackages: ((String, String) -> Unit) -> Unit by scriptProj.extra
@@ -65,7 +65,8 @@ val manifestAttributes = mapOf(
     "Implementation-Version" to project.version,
     "Implementation-Vendor" to "Su5eD",
     "Implementation-Timestamp" to LocalDateTime.now(),
-    "FMLCorePlugin" to coremodPath
+    "FMLCorePlugin" to coremodPath,
+    "FMLCorePluginContainsFMLMod" to true
 )
 
 tasks {
@@ -106,7 +107,7 @@ tasks {
     processResources {
         inputs.property("version", project.version)
         
-        filesMatching("koremods.info") {
+        filesMatching("mcmod.info") {
             expand("version" to project.version)
         }
     }
