@@ -56,7 +56,7 @@ public class KoremodsSetup implements IFMLCallHook {
         LOGGER.info("Setting up Koremods");
         
         KoremodsPrelaunch prelaunch = new KoremodsPrelaunch(this.gameDir, ForgeVersion.mcVersion);
-        prelaunch.launch(FMLLaunchHandler.side() == Side.CLIENT ? SPLASH_FACTORY_CLASS : null);
+        prelaunch.launch(FMLLaunchHandler.side() == Side.CLIENT ? SPLASH_FACTORY_CLASS : null, null);
         
         return null;
     }
