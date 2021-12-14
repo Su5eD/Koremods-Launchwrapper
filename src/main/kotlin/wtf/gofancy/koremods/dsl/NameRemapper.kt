@@ -22,36 +22,17 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launchwrapper;
+@file:Suppress("unused")
 
-import com.google.common.eventbus.EventBus;
-import dev.su5ed.koremods.prelaunch.KoremodsBlackboard;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.MetadataCollection;
-import net.minecraftforge.fml.common.ModMetadata;
+package wtf.gofancy.koremods.dsl
 
-import java.io.InputStream;
+import wtf.gofancy.koremods.script.CoremodKtsScript
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper
 
-public class KoremodsModContainer extends DummyModContainer {
+fun CoremodKtsScript.mapMethodName(owner: String, name: String, desc: String): String {
+    return FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(owner, name, desc)
+}
 
-    public KoremodsModContainer() {
-        super(readMetadata());
-    }
-
-    @Override
-    public boolean registerBus(EventBus bus, LoadController controller) {
-        return true;
-    }
-
-    private static ModMetadata readMetadata() {
-        InputStream ins = KoremodsModContainer.class.getResourceAsStream("/mcmod.info");
-        if (ins == null) {
-            KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
-            return new ModMetadata();
-        }
-    
-        MetadataCollection metadata = MetadataCollection.from(ins, KoremodsBlackboard.NAME);
-        return metadata.getMetadataForId(KoremodsBlackboard.MODID, null);
-    }
+fun CoremodKtsScript.mapFieldName(owner: String, name: String, desc: String): String {
+    return FMLDeobfuscatingRemapper.INSTANCE.mapFieldName(owner, name, desc)
 }

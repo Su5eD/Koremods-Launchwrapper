@@ -22,6 +22,28 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.dsl
+package wtf.gofancy.koremods.launchwrapper.transform;
 
-var TransformerPropertiesExtension.computeFrames: Boolean by DefaultProperty(false)
+import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
+import net.minecraft.launchwrapper.IClassTransformer;
+
+public class KoremodsTransformerWrapper implements IClassTransformer {
+    private static final String TRANSFORMER_CLASS = "wtf.gofancy.koremods.launchwrapper.KoremodsTransformer";
+    private IClassTransformer actualTransformer;
+    
+    @Override
+    public byte[] transform(String name, String transformedName, byte[] bytes) {
+        if (this.actualTransformer == null) {
+            if (KoremodsPrelaunch.dependencyClassLoader != null) {
+                try {
+                    Class<?> cl = KoremodsPrelaunch.dependencyClassLoader.loadClass(TRANSFORMER_CLASS);
+                    actualTransformer = (IClassTransformer) cl.newInstance();
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        
+        return this.actualTransformer != null ? this.actualTransformer.transform(name, transformedName, bytes) : bytes;
+    }
+}

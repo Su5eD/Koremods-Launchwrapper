@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launchwrapper
+package wtf.gofancy.koremods.launchwrapper
 
-import dev.su5ed.koremods.dsl.TransformerPropertiesExtension
-import dev.su5ed.koremods.dsl.computeFrames
-import dev.su5ed.koremods.transformClass
+import wtf.gofancy.koremods.dsl.TransformerPropertiesExtension
+import wtf.gofancy.koremods.dsl.computeFrames
+import wtf.gofancy.koremods.transformClass
 import net.minecraft.launchwrapper.IClassTransformer
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
@@ -49,7 +49,9 @@ class KoremodsTransformer : IClassTransformer {
         
         return transformClass(name, node).let { props ->
             val computeFrames = props.any(TransformerPropertiesExtension::computeFrames)
-            val writer = if (computeFrames) KoremodsClassWriter(CLASS_WRITE_FRAMES_FLAGS) else ClassWriter(CLASS_WRITER_FLAGS)
+            val writer = if (computeFrames) KoremodsClassWriter(CLASS_WRITE_FRAMES_FLAGS) else ClassWriter(
+                CLASS_WRITER_FLAGS
+            )
             node.accept(writer)
 
             return@let writer.toByteArray()

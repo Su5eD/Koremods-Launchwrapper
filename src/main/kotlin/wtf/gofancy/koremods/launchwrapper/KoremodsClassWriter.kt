@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package dev.su5ed.koremods.launchwrapper
+package wtf.gofancy.koremods.launchwrapper
 
-import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.classExtends
-import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager.getSuperClass
+import wtf.gofancy.koremods.launchwrapper.transform.ClassHierarchyManager.classExtends
+import wtf.gofancy.koremods.launchwrapper.transform.ClassHierarchyManager.getSuperClass
 import org.objectweb.asm.ClassWriter
 
 /**

@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package dev.su5ed.koremods.launchwrapper.transform;
+package wtf.gofancy.koremods.launchwrapper.transform;
 
-import dev.su5ed.koremods.launchwrapper.KoremodsSetup;
+import wtf.gofancy.koremods.launchwrapper.KoremodsSetup;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;

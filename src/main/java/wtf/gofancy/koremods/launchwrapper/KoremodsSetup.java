@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launchwrapper;
+package wtf.gofancy.koremods.launchwrapper;
 
-import dev.su5ed.koremods.prelaunch.KoremodsPrelaunch;
+import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class KoremodsSetup implements IFMLCallHook {
     public static boolean runtimeDeobfuscationEnabled;
-    private static final String SPLASH_FACTORY_CLASS = "dev.su5ed.koremods.launchwrapper.SplashScreenFactoryImpl";
+    private static final String SPLASH_FACTORY_CLASS = "wtf.gofancy.koremods.launchwrapper.SplashScreenFactoryImpl";
     
     static final Logger LOGGER = LogManager.getLogger("Koremods.Setup");
     private Path gameDir;

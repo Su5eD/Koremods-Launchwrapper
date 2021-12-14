@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launchwrapper;
+package wtf.gofancy.koremods.launchwrapper;
 
-import dev.su5ed.koremods.launchwrapper.transform.ClassHierarchyManager;
-import dev.su5ed.koremods.launchwrapper.transform.KoremodsTransformerWrapper;
+import wtf.gofancy.koremods.launchwrapper.transform.ClassHierarchyManager;
+import wtf.gofancy.koremods.launchwrapper.transform.KoremodsTransformerWrapper;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name;
@@ -37,7 +37,7 @@ import java.util.Map;
 @Name("Koremods Loading Plugin")
 @MCVersion("1.12.2")
 @SortingIndex(1001)
-@TransformerExclusions({ "dev.su5ed.koremods." })
+@TransformerExclusions({ "wtf.gofancy.koremods." })
 public class KoremodsLoadingPlugin implements IFMLLoadingPlugin {
 
     @Override

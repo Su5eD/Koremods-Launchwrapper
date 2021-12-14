@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.su5ed.koremods.launchwrapper;
+package wtf.gofancy.koremods.launchwrapper;
 
-import dev.su5ed.koremods.api.SplashScreen;
-import dev.su5ed.koremods.prelaunch.DependencyClassLoader;
-import dev.su5ed.koremods.prelaunch.KoremodsPrelaunch;
-import dev.su5ed.koremods.prelaunch.SplashScreenFactory;
+import wtf.gofancy.koremods.api.SplashScreen;
+import wtf.gofancy.koremods.prelaunch.DependencyClassLoader;
+import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
+import wtf.gofancy.koremods.prelaunch.SplashScreenFactory;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ import java.util.List;
 public class SplashScreenFactoryImpl implements SplashScreenFactory {
     private static final List<String> LWJGL_DEP_PACKAGES = Arrays.asList(
             "org.lwjgl.", 
-            "dev.su5ed.koremods.splash."
+            "wtf.gofancy.koremods.splash."
     );
     
     @Override
@@ -49,7 +49,7 @@ public class SplashScreenFactoryImpl implements SplashScreenFactory {
                     KoremodsPrelaunch.dependencyClassLoader,
                     LWJGL_DEP_PACKAGES
             );
-            Class<?> splashClass = splashClassLoader.loadClass("dev.su5ed.koremods.splash.KoremodsSplashScreen");
+            Class<?> splashClass = splashClassLoader.loadClass("wtf.gofancy.koremods.splash.KoremodsSplashScreen");
             SplashScreen splash = (SplashScreen) splashClass.newInstance();
             splash.setTerminateOnClose(true);
             

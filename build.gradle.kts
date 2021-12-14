@@ -20,7 +20,7 @@ plugins {
     id("org.cadixdev.licenser") version "0.6.1"
 }
 
-group = "dev.su5ed.koremods"
+group = "wtf.gofancy.koremods"
 version = getGitVersion()
 
 val kotlinVersion: String by project
@@ -124,7 +124,7 @@ dependencies {
         lwjglNatives.forEach { os -> lwjglRuntime("org.lwjgl", comp, classifier = os) }
     }
     
-    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.5"))
+    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.6"))
 }
 
 license {
