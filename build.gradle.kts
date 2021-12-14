@@ -26,7 +26,6 @@ version = getGitVersion()
 val kotlinVersion: String by project
 val lwjglVersion: String by project
 val coremodPath: String by project
-val repackPackagePath: String by project
 
 val lwjglComponents = listOf("lwjgl", "lwjgl-glfw", "lwjgl-opengl", "lwjgl-stb")
 val lwjglNatives = listOf("natives-windows", "natives-linux", "natives-macos")
@@ -49,8 +48,7 @@ val manifestAttributes = mapOf(
     "Implementation-Title" to project.name,
     "Implementation-Version" to project.version,
     "Implementation-Vendor" to "Garden of Fancy",
-    "FMLCorePlugin" to coremodPath,
-    "FMLCorePluginContainsFMLMod" to true
+    "FMLCorePlugin" to coremodPath
 )
 
 configurations {
@@ -108,7 +106,7 @@ repositories {
 }
 
 dependencies {
-    minecraft(group = "net.minecraftforge", name = "forge", version = "1.12.2-14.23.5.2859")
+    minecraft(group = "net.minecraftforge", name = "forge", version = "1.12.2-14.23.5.2860")
     
     shadeKotlin(kotlin("compiler-embeddable"))
     shadeKotlin(kotlin("scripting-common"))
@@ -126,7 +124,7 @@ dependencies {
         lwjglNatives.forEach { os -> lwjglRuntime("org.lwjgl", comp, classifier = os) }
     }
     
-    compileOnly(script(group = "dev.su5ed.koremods", name = "koremods-script", version = "0.1.+"))
+    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.5"))
 }
 
 license {
