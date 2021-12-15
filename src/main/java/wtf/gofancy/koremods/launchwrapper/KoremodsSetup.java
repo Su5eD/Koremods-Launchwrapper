@@ -24,13 +24,11 @@
 
 package wtf.gofancy.koremods.launchwrapper;
 
-import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
-import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -38,7 +36,7 @@ import java.util.Map;
 
 public class KoremodsSetup implements IFMLCallHook {
     public static boolean runtimeDeobfuscationEnabled;
-    private static final String SPLASH_FACTORY_CLASS = "wtf.gofancy.koremods.launchwrapper.SplashScreenFactoryImpl";
+    private static final String LAUNCH_PLUGIN_CLASS = "wtf.gofancy.koremods.launchwrapper.KoremodsPlugin";
     
     static final Logger LOGGER = LogManager.getLogger("Koremods.Setup");
     private Path gameDir;
@@ -56,7 +54,7 @@ public class KoremodsSetup implements IFMLCallHook {
         LOGGER.info("Setting up Koremods");
         
         KoremodsPrelaunch prelaunch = new KoremodsPrelaunch(this.gameDir, ForgeVersion.mcVersion);
-        prelaunch.launch(FMLLaunchHandler.side() == Side.CLIENT ? SPLASH_FACTORY_CLASS : null, null);
+        prelaunch.launch(LAUNCH_PLUGIN_CLASS);
         
         return null;
     }

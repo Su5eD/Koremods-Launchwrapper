@@ -101,8 +101,15 @@ fancyGradle {
 
 repositories {
     mavenCentral()
-    maven("https://su5ed.jfrog.io/artifactory/maven")
     mavenLocal()
+    maven { // Koffee
+        name = "Su5eD Artifactory"
+        url = uri("https://su5ed.jfrog.io/artifactory/maven")
+    }
+    maven { // Koremods Script
+        name = "Koremods"
+        url = uri("https://gitlab.com/api/v4/projects/32090420/packages/maven")
+    }
 }
 
 dependencies {
@@ -124,7 +131,7 @@ dependencies {
         lwjglNatives.forEach { os -> lwjglRuntime("org.lwjgl", comp, classifier = os) }
     }
     
-    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.+"))
+    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.8"))
 }
 
 license {
@@ -136,8 +143,8 @@ license {
         set("app", "Koremods")
     }
     
-    excludes.add("dev/su5ed/koremods/launchwrapper/transform/ClassHierarchyManager.java")
-    excludes.add("dev/su5ed/koremods/launchwrapper/KoremodsClassWriter.kt")
+    excludes.add("wtf/gofancy/koremods/launchwrapper/transform/ClassHierarchyManager.java")
+    excludes.add("wtf/gofancy/koremods/launchwrapper/KoremodsClassWriter.kt")
 }
 
 val kotlinDepsJar by tasks.creating(ShadowJar::class) {

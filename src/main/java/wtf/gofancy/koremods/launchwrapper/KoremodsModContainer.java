@@ -52,6 +52,6 @@ public class KoremodsModContainer extends DummyModContainer {
         }
     
         MetadataCollection metadata = MetadataCollection.from(ins, KoremodsBlackboard.NAME);
-        return metadata.getMetadataForId(KoremodsBlackboard.MODID, null);
+        return metadata.getMetadataForId(KoremodsBlackboard.NAMESPACE, null);
     }
 }

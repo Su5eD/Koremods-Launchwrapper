@@ -24,7 +24,4 @@
 
 package wtf.gofancy.koremods.dsl
 
-import wtf.gofancy.koremods.dsl.DefaultProperty
-import wtf.gofancy.koremods.dsl.TransformerPropertiesExtension
-
 var TransformerPropertiesExtension.computeFrames: Boolean by DefaultProperty(false)

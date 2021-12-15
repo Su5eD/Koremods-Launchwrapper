@@ -32,7 +32,6 @@ import java.util.*;
  * 
  * @see <a href="https://github.com/TheCBProject/ChickenASM/blob/1.12.x/src/main/java/codechicken/asm/ClassHierarchyManager.java">ClassHierarchyManager</a>
  */
-
 public class ClassHierarchyManager implements IClassTransformer {
     private static final Map<String, SuperCache> superClasses = new HashMap<>();
 
@@ -149,13 +148,13 @@ public class ClassHierarchyManager implements IClassTransformer {
     
         void flatten() {
             if (!this.flattened) {
-                new ArrayList<>(this.parents).forEach(s -> {
-                    SuperCache cache = declareClass(s);
-                    if (cache != null) {
-                        cache.flatten();
-                        this.parents.addAll(cache.parents);
-                    }
-                });
+                this.parents.stream()
+                        .map(ClassHierarchyManager::declareClass)
+                        .filter(Objects::nonNull)
+                        .forEach(cache -> {
+                            cache.flatten();
+                            this.parents.addAll(cache.parents);
+                        });
                 this.flattened = true;
             }
         }
