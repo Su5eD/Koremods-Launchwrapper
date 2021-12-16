@@ -132,7 +132,7 @@ dependencies {
         lwjglNatives.forEach { os -> lwjglRuntime("org.lwjgl", comp, classifier = os) }
     }
     
-    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.10"))
+    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.11"))
 }
 
 license {
