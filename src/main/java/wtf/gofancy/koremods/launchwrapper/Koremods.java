@@ -24,34 +24,32 @@
 
 package wtf.gofancy.koremods.launchwrapper;
 
-import com.google.common.eventbus.EventBus;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import wtf.gofancy.koremods.prelaunch.KoremodsBlackboard;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.MetadataCollection;
-import net.minecraftforge.fml.common.ModMetadata;
 
-import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class KoremodsModContainer extends DummyModContainer {
-
-    public KoremodsModContainer() {
-        super(readMetadata());
-    }
-
-    @Override
-    public boolean registerBus(EventBus bus, LoadController controller) {
-        return true;
-    }
-
-    private static ModMetadata readMetadata() {
-        InputStream ins = KoremodsModContainer.class.getResourceAsStream("/mcmod.info");
-        if (ins == null) {
-            KoremodsSetup.LOGGER.error("Couldn't read mod metadata file");
-            return new ModMetadata();
-        }
+@Mod(modid = KoremodsBlackboard.NAMESPACE, useMetadata = true)
+public class Koremods {
+    private static final Logger LOGGER = LogManager.getLogger();
     
-        MetadataCollection metadata = MetadataCollection.from(ins, KoremodsBlackboard.NAME);
-        return metadata.getMetadataForId(KoremodsBlackboard.NAMESPACE, null);
+    public Koremods() {
+        LOGGER.info("Mod Constructed");
+    }
+
+    @EventHandler
+    public void onModConstruction(FMLConstructionEvent event) {
+        Map<String, Path> mods = Loader.instance().getActiveModList().stream()
+                .collect(Collectors.toMap(ModContainer::getModId, mod -> mod.getSource().toPath()));
+        
+        KoremodsSetup.prelaunch.getLaunchPlugin().verifyScriptPacks(mods);
     }
 }

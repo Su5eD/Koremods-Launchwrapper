@@ -39,6 +39,7 @@ public class KoremodsSetup implements IFMLCallHook {
     private static final String LAUNCH_PLUGIN_CLASS = "wtf.gofancy.koremods.launchwrapper.KoremodsPlugin";
     
     static final Logger LOGGER = LogManager.getLogger("Koremods.Setup");
+    public static KoremodsPrelaunch prelaunch;
     private Path gameDir;
     
     @Override
@@ -53,7 +54,7 @@ public class KoremodsSetup implements IFMLCallHook {
     public Void call() throws Exception {
         LOGGER.info("Setting up Koremods");
         
-        KoremodsPrelaunch prelaunch = new KoremodsPrelaunch(this.gameDir, ForgeVersion.mcVersion);
+        prelaunch = new KoremodsPrelaunch(this.gameDir, ForgeVersion.mcVersion);
         prelaunch.launch(LAUNCH_PLUGIN_CLASS);
         
         return null;

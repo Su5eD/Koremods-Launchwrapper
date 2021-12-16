@@ -48,7 +48,8 @@ val manifestAttributes = mapOf(
     "Implementation-Title" to project.name,
     "Implementation-Version" to project.version,
     "Implementation-Vendor" to "Garden of Fancy",
-    "FMLCorePlugin" to coremodPath
+    "FMLCorePlugin" to coremodPath,
+    "FMLCorePluginContainsFMLMod" to true
 )
 
 configurations {
@@ -131,7 +132,7 @@ dependencies {
         lwjglNatives.forEach { os -> lwjglRuntime("org.lwjgl", comp, classifier = os) }
     }
     
-    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.8"))
+    compileOnly(script(group = "wtf.gofancy.koremods", name = "koremods-script", version = "0.1.10"))
 }
 
 license {

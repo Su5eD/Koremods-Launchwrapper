@@ -24,8 +24,9 @@
 
 package wtf.gofancy.koremods.launchwrapper.transform;
 
-import wtf.gofancy.koremods.prelaunch.KoremodsPrelaunch;
 import net.minecraft.launchwrapper.IClassTransformer;
+import wtf.gofancy.koremods.launchwrapper.KoremodsSetup;
+import wtf.gofancy.koremods.prelaunch.DependencyClassLoader;
 
 public class KoremodsTransformerWrapper implements IClassTransformer {
     private static final String TRANSFORMER_CLASS = "wtf.gofancy.koremods.launchwrapper.KoremodsTransformer";
@@ -33,10 +34,11 @@ public class KoremodsTransformerWrapper implements IClassTransformer {
     
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        if (this.actualTransformer == null) {
-            if (KoremodsPrelaunch.dependencyClassLoader != null) {
+        if (this.actualTransformer == null && KoremodsSetup.prelaunch != null) {
+            DependencyClassLoader classLoader = KoremodsSetup.prelaunch.getDependencyClassLoader();
+            if (classLoader != null) {
                 try {
-                    Class<?> cl = KoremodsPrelaunch.dependencyClassLoader.loadClass(TRANSFORMER_CLASS);
+                    Class<?> cl = classLoader.loadClass(TRANSFORMER_CLASS);
                     actualTransformer = (IClassTransformer) cl.newInstance();
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
